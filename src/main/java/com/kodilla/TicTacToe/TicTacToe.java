@@ -1,6 +1,7 @@
 package com.kodilla.TicTacToe;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
@@ -23,6 +24,9 @@ public class TicTacToe extends Application {
         Background background = new Background(backgroundImage);
 
         GridPane grid = new GridPane();
+        grid.setPadding(new Insets(1,1,20,20));
+        grid.setHgap(5.5);
+        grid.setVgap(3);
 
         grid.setBackground(background);
         Scene scene = new Scene(grid, 600,600);
