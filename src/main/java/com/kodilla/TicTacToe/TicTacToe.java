@@ -8,11 +8,14 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.beans.EventHandler;
 
 public class TicTacToe extends Application {
 
     private Image imageback = new Image("file:src/main/resources/background.jpg");
-
+    private String shapeOfPlayer;
+    private String shapeOfComputer;
     public static void main(String[] args){
         launch(args);
     }
@@ -33,5 +36,13 @@ public class TicTacToe extends Application {
         primaryStage.setTitle("Tic Tac Toe");
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    public void shapeDecision(){
+        Button buttonCircle=new Button("Circle");
+        Button buttonSquare = new Button("Square");
+
+        buttonCircle.setOnAction();
+
     }
 }
