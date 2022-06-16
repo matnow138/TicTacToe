@@ -14,7 +14,10 @@ import javafx.scene.text.Text;
 import javafx.event.ActionEvent;
 
 
+import javax.swing.*;
 
+import java.util.ArrayList;
+import java.util.List;
 
 import static javafx.application.Platform.exit;
 
@@ -23,68 +26,32 @@ public class TicTacToe extends Application {
     private Image imageback = new Image("file:src/main/resources/background.jpg");
     private String shapeOfPlayer="";
     private String shapeOfComputer="";
-    private HBox hbox;
+    private char[][] board = new char[2][2];
+    private List<Button> buttons = new ArrayList<>();
+
     public static void main(String[] args){
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage){
+
+        //Instruction for player
         instruction();
-        Button buttonCircle=new Button("Circle");
-        buttonCircle.setOnAction(ActionEvent-> {
+        //Player decides what shape will he/she play
+        shapeDecision();
+        //Actual game
+        gameRunner();
 
-            shapeOfPlayer = "Circle";
-            shapeOfComputer = "Square";
-            System.out.println(shapeOfPlayer);
-        });
-        Button buttonSquare = new Button("Square");
-
-
-
-
-
-        GridPane gridShapeDecision = new GridPane();
-        gridShapeDecision.add(buttonCircle,0,0,1,1);
-        gridShapeDecision.add(buttonSquare, 0,1,1,1);
-        gridShapeDecision.setHgap(10);
-        gridShapeDecision.setVgap(10);
-
-        Scene sceneShapeDecision = new Scene(gridShapeDecision, 600,600);
-        primaryStage.setTitle("Tic Tac Toe");
-        primaryStage.setScene(sceneShapeDecision);
-        primaryStage.show();
-
-
-
-
-        buttonSquare.setOnAction(value -> {
-            shapeOfPlayer = "Square";
-            shapeOfComputer = "Circle";
-        });
-
-
-       /* BackgroundSize backgroundSize = new BackgroundSize(50,50,true,true,true,false);
-        BackgroundImage backgroundImage = new BackgroundImage(imageback, BackgroundRepeat.REPEAT,BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,backgroundSize);
-        Background background = new Background(backgroundImage);
-
-        GridPane grid = new GridPane();
-        grid.setPadding(new Insets(1,1,20,20));
-        grid.setHgap(5.5);
-        grid.setVgap(3);
-        grid.setBackground(background);
-        Scene scene = new Scene(grid, 600,600);
-        primaryStage.setTitle("Tic Tac Toe");
-        primaryStage.setScene(scene);
-        primaryStage.show();*/
     }
 
     public void instruction(){
         Text text = new Text();
-        text.setText("Welcome to Tic Tac toe game! \n Here are some rules:\n "+
+        text.setText("Welcome to Tic Tac toe game! \n Here are some rules:\n"+
                 "1. Chose 'X' or 'O'\n"+
                 "2. Player plays against computer\n"+
-                "3. If  3 'X' or 3 'O' appears in row, column or diagonal game ends.");
+                "3. If  3 'X' or 3 'O' appears in row, column or diagonal game ends.\n" +
+                "4. Using keys 1-9 please chose place to insert previously chosen shape");
 
         Button confirm = new Button("Proceed");
 
@@ -106,5 +73,100 @@ public class TicTacToe extends Application {
 
 
 
+    }
+    public void shapeDecision(){
+
+        Stage stage = new Stage();
+        Text text = new Text();
+        text.setText("Please chose your shape:");
+
+        Button buttonCircle=new Button("Circle");
+
+        buttonCircle.setOnAction((ActionEvent)-> {
+
+            shapeOfPlayer = "Circle";
+            shapeOfComputer = "Square";
+            stage.close();
+
+        });
+        Button buttonSquare = new Button("Square");
+
+        buttonSquare.setOnAction((ActionEvent) ->{
+            shapeOfPlayer = "Square";
+            shapeOfComputer = "Circle";
+            stage.close();
+        });
+
+        GridPane gridPane = new GridPane();
+        gridPane.add(text,0,0,1,1);
+        gridPane.add(buttonCircle,0,1,1,1);
+        gridPane.add(buttonSquare,1,1,1,1);
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+
+        Scene scene = new Scene(gridPane, 400,300);
+
+        stage.setScene(scene);
+        stage.showAndWait();
+
+    }
+
+    public void gameRunner(){
+        board();
+
+
+        //To do
+    }
+
+    public void board(){
+        Stage stage = new Stage();
+        GridPane grid = new GridPane();
+
+        buttons.add(new Button("1"));
+        buttons.add(new Button("2"));
+        buttons.add(new Button("3"));
+        buttons.add(new Button("4"));
+        buttons.add(new Button("5"));
+        buttons.add(new Button("6"));
+        buttons.add(new Button("7"));
+        buttons.add(new Button("8"));
+        buttons.add(new Button("9"));
+
+        //setting background image
+        BackgroundSize backgroundSize = new BackgroundSize(50,50,true,true,true,false);
+        BackgroundImage backgroundImage = new BackgroundImage(imageback, BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,backgroundSize);
+        Background background = new Background(backgroundImage);
+
+        //creating grid
+        grid.setPadding(new Insets(0,0,0,0));
+        grid.setHgap(100);
+        grid.setVgap(100);
+        grid.setBackground(background);
+
+        for (Button button:buttons) {
+            grid.add(buttons.get(buttons.indexOf(button)), 0, 0, 1, 1);
+            grid.add(buttons.get(1), 1, 0, 1, 1);
+            grid.add(buttons.get(2), 2, 0, 1, 1);
+            grid.add(buttons.get(3), 0, 1, 1, 1);
+            grid.add(buttons.get(4), 1, 1, 1, 1);
+            grid.add(buttons.get(5), 2, 1, 1, 1);
+            grid.add(buttons.get(6), 0, 2, 1, 1);
+            grid.add(buttons.get(7), 1, 2, 1, 1);
+            grid.add(buttons.get(8), 2, 2, 1, 1);
+
+        }
+
+
+
+        grid.setAlignment(Pos.CENTER);
+
+        //creating scene
+        Scene scene = new Scene(grid, 600,600);
+
+        //display of stage
+        stage.setTitle("Tic Tac Toe");
+        stage.setScene(scene);
+        stage.show();
     }
 }
