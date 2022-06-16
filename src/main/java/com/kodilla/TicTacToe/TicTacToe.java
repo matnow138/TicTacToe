@@ -25,9 +25,9 @@ import static javafx.application.Platform.exit;
 public class TicTacToe extends Application {
 
     private Image imageback = new Image("file:src/main/resources/background.jpg");
-    private char shapeOfPlayer;
-    private char shapeOfComputer;
-    private char[][] board = new char[2][2];
+    private String shapeOfPlayer="";
+    private String shapeOfComputer="";
+    private String[][] board = new String[3][3];
     private List<Button> buttons = new ArrayList<>();
 
     public static void main(String[] args){
@@ -81,20 +81,20 @@ public class TicTacToe extends Application {
         Text text = new Text();
         text.setText("Please chose your shape:");
 
-        Button buttonO=new Button("Circle");
+        Button buttonO=new Button("O");
 
         buttonO.setOnAction((ActionEvent)-> {
 
-            shapeOfPlayer = 'O';
-            shapeOfComputer = 'X';
+            shapeOfPlayer = "O";
+            shapeOfComputer = "X";
             stage.close();
 
         });
         Button buttonX = new Button("X");
 
         buttonX.setOnAction((ActionEvent) ->{
-            shapeOfPlayer = 'X';
-            shapeOfComputer = 'O';
+            shapeOfPlayer = "X";
+            shapeOfComputer = "O";
             stage.close();
         });
 
@@ -114,18 +114,16 @@ public class TicTacToe extends Application {
     }
 
     public void gameRunner(){
+        boardFill();
         Stage stage = board();
+        stage.showAndWait();
+        stage = board();
         stage.show();
-        playerMove(stage);
 
 
         //To do
     }
-
-    public Stage board(){
-        Stage stage = new Stage();
-        GridPane grid = new GridPane();
-
+    public void boardFill(){
         buttons.add(new Button("1"));
         buttons.add(new Button("2"));
         buttons.add(new Button("3"));
@@ -135,6 +133,18 @@ public class TicTacToe extends Application {
         buttons.add(new Button("7"));
         buttons.add(new Button("8"));
         buttons.add(new Button("9"));
+
+        for(int column=0;column<=2;column++){
+            for(int row=0;row<=2;row++){
+               board[column][row]=buttons.get(column+row).getText();
+            }
+        }
+    }
+    public Stage board(){
+        Stage stage = new Stage();
+        GridPane grid = new GridPane();
+
+
 
         //setting background image
         BackgroundSize backgroundSize = new BackgroundSize(50,50,true,true,true,false);
@@ -148,25 +158,39 @@ public class TicTacToe extends Application {
         grid.setBackground(background);
 
         //mechanics for display buttons 1-9
+        playerMove(stage);
+        computerMove(stage);
+
         int column=0;
         int row=0;
+        Text text = new Text();
         for (Button button:buttons) {
-
-            if(column<2) {
-                if(board[column][row]==shapeOfPlayer || board[column][row]==shapeOfComputer) {
+            if(column<=2) {
+                if(board[column][row].equals(shapeOfPlayer)){
+                    text.setText(shapeOfPlayer);
+                    grid.add(text,column,row,1,1);
+                    column++;
+                } else if (board[column][row].equals(shapeOfComputer)) {
+                    text.setText(shapeOfComputer);
+                    grid.add(text,column,row,1,1);
+                    column++;
+                }else {
                     grid.add(button, column, row, 1, 1);
                     column++;
-                }
-            } else if (column>=2) {
-                grid.add(button, column, row, 1, 1);
+                                    }
+            } else {
                 row++;
-                column=0;
+                column = 0;
+                if (board[column][row].equals(shapeOfPlayer)) {
+                    text.setText(shapeOfPlayer);
+                    grid.add(text, column, row, 1, 1);
+                } else {
+                    grid.add(button, column, row, 1, 1);
+                }
+                column++;
             }
 
         }
-
-
-
         grid.setAlignment(Pos.CENTER);
 
         //creating scene
@@ -177,35 +201,48 @@ public class TicTacToe extends Application {
         stage.setScene(scene);
         return stage;
     }
+
     public void playerMove(Stage stage){
         buttons.get(0).setOnAction((ActionEvent)->{
-            board[0][0]=shapeOfPlayer;
+            board[0][0]=(shapeOfPlayer);
+            stage.close();
         });
-        buttons.get(0).setOnAction((ActionEvent)->{
+        buttons.get(1).setOnAction((ActionEvent)->{
             board[1][0]=shapeOfPlayer;
+            stage.close();
         });
-        buttons.get(0).setOnAction((ActionEvent)->{
+        buttons.get(2).setOnAction((ActionEvent)->{
             board[2][0]=shapeOfPlayer;
+            stage.close();
         });
-        buttons.get(0).setOnAction((ActionEvent)->{
+        buttons.get(3).setOnAction((ActionEvent)->{
             board[0][1]=shapeOfPlayer;
+            stage.close();
         });
-        buttons.get(0).setOnAction((ActionEvent)->{
+        buttons.get(4).setOnAction((ActionEvent)->{
             board[1][1]=shapeOfPlayer;
+            stage.close();
         });
-        buttons.get(0).setOnAction((ActionEvent)->{
+        buttons.get(5).setOnAction((ActionEvent)->{
             board[2][1]=shapeOfPlayer;
+            stage.close();
         });
-        buttons.get(0).setOnAction((ActionEvent)->{
+        buttons.get(6).setOnAction((ActionEvent)->{
             board[0][2]=shapeOfPlayer;
+            stage.close();
         });
-        buttons.get(0).setOnAction((ActionEvent)->{
+        buttons.get(7).setOnAction((ActionEvent)->{
             board[1][2]=shapeOfPlayer;
+            stage.close();
         });
-        buttons.get(0).setOnAction((ActionEvent)->{
+        buttons.get(8).setOnAction((ActionEvent)->{
             board[2][2]=shapeOfPlayer;
+            stage.close();
         });
 
 
+    }
+    public void computerMove(Stage stage){
+        //TODO 17.06
     }
 }
