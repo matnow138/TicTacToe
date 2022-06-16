@@ -2,6 +2,7 @@ package com.kodilla.TicTacToe;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -24,8 +25,8 @@ import static javafx.application.Platform.exit;
 public class TicTacToe extends Application {
 
     private Image imageback = new Image("file:src/main/resources/background.jpg");
-    private String shapeOfPlayer="";
-    private String shapeOfComputer="";
+    private char shapeOfPlayer;
+    private char shapeOfComputer;
     private char[][] board = new char[2][2];
     private List<Button> buttons = new ArrayList<>();
 
@@ -80,27 +81,27 @@ public class TicTacToe extends Application {
         Text text = new Text();
         text.setText("Please chose your shape:");
 
-        Button buttonCircle=new Button("Circle");
+        Button buttonO=new Button("Circle");
 
-        buttonCircle.setOnAction((ActionEvent)-> {
+        buttonO.setOnAction((ActionEvent)-> {
 
-            shapeOfPlayer = "Circle";
-            shapeOfComputer = "Square";
+            shapeOfPlayer = 'O';
+            shapeOfComputer = 'X';
             stage.close();
 
         });
-        Button buttonSquare = new Button("Square");
+        Button buttonX = new Button("X");
 
-        buttonSquare.setOnAction((ActionEvent) ->{
-            shapeOfPlayer = "Square";
-            shapeOfComputer = "Circle";
+        buttonX.setOnAction((ActionEvent) ->{
+            shapeOfPlayer = 'X';
+            shapeOfComputer = 'O';
             stage.close();
         });
 
         GridPane gridPane = new GridPane();
         gridPane.add(text,0,0,1,1);
-        gridPane.add(buttonCircle,0,1,1,1);
-        gridPane.add(buttonSquare,1,1,1,1);
+        gridPane.add(buttonO,0,1,1,1);
+        gridPane.add(buttonX,1,1,1,1);
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(10);
         gridPane.setVgap(10);
@@ -113,13 +114,15 @@ public class TicTacToe extends Application {
     }
 
     public void gameRunner(){
-        board();
+        Stage stage = board();
+        stage.show();
+        playerMove(stage);
 
 
         //To do
     }
 
-    public void board(){
+    public Stage board(){
         Stage stage = new Stage();
         GridPane grid = new GridPane();
 
@@ -144,16 +147,21 @@ public class TicTacToe extends Application {
         grid.setVgap(100);
         grid.setBackground(background);
 
+        //mechanics for display buttons 1-9
+        int column=0;
+        int row=0;
         for (Button button:buttons) {
-            grid.add(buttons.get(buttons.indexOf(button)), 0, 0, 1, 1);
-            grid.add(buttons.get(1), 1, 0, 1, 1);
-            grid.add(buttons.get(2), 2, 0, 1, 1);
-            grid.add(buttons.get(3), 0, 1, 1, 1);
-            grid.add(buttons.get(4), 1, 1, 1, 1);
-            grid.add(buttons.get(5), 2, 1, 1, 1);
-            grid.add(buttons.get(6), 0, 2, 1, 1);
-            grid.add(buttons.get(7), 1, 2, 1, 1);
-            grid.add(buttons.get(8), 2, 2, 1, 1);
+
+            if(column<2) {
+                if(board[column][row]==shapeOfPlayer || board[column][row]==shapeOfComputer) {
+                    grid.add(button, column, row, 1, 1);
+                    column++;
+                }
+            } else if (column>=2) {
+                grid.add(button, column, row, 1, 1);
+                row++;
+                column=0;
+            }
 
         }
 
@@ -167,6 +175,37 @@ public class TicTacToe extends Application {
         //display of stage
         stage.setTitle("Tic Tac Toe");
         stage.setScene(scene);
-        stage.show();
+        return stage;
+    }
+    public void playerMove(Stage stage){
+        buttons.get(0).setOnAction((ActionEvent)->{
+            board[0][0]=shapeOfPlayer;
+        });
+        buttons.get(0).setOnAction((ActionEvent)->{
+            board[1][0]=shapeOfPlayer;
+        });
+        buttons.get(0).setOnAction((ActionEvent)->{
+            board[2][0]=shapeOfPlayer;
+        });
+        buttons.get(0).setOnAction((ActionEvent)->{
+            board[0][1]=shapeOfPlayer;
+        });
+        buttons.get(0).setOnAction((ActionEvent)->{
+            board[1][1]=shapeOfPlayer;
+        });
+        buttons.get(0).setOnAction((ActionEvent)->{
+            board[2][1]=shapeOfPlayer;
+        });
+        buttons.get(0).setOnAction((ActionEvent)->{
+            board[0][2]=shapeOfPlayer;
+        });
+        buttons.get(0).setOnAction((ActionEvent)->{
+            board[1][2]=shapeOfPlayer;
+        });
+        buttons.get(0).setOnAction((ActionEvent)->{
+            board[2][2]=shapeOfPlayer;
+        });
+
+
     }
 }
