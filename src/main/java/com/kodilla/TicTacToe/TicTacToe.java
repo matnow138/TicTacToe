@@ -133,8 +133,12 @@ public class TicTacToe extends Application {
         stage.setScene(scene);
             stage.showAndWait();
         stage = board();
+        stage.setTitle("Tic Tac Toe");
+        stage.setScene(scene);
         stage.showAndWait();
         stage = board();
+        stage.setTitle("Tic Tac Toe");
+        stage.setScene(scene);
         stage.showAndWait();
 
 
@@ -154,10 +158,11 @@ public class TicTacToe extends Application {
         buttons.add(new Button("7"));
         buttons.add(new Button("8"));
         buttons.add(new Button("9"));
-
+        int index=0;
         for (int column = 0; column <= 2; column++) {
             for (int row = 0; row <= 2; row++) {
-                board[column][row] = buttons.get(column + row).getText();
+                board[column][row] = buttons.get(index).getText();
+                index++;
             }
         }
         int column=0;
@@ -171,11 +176,7 @@ public class TicTacToe extends Application {
             }
 
         }
-        /*for (int column = 0; column <= 2; column++) {
-            for (int row = 0; row <= 2; row++) {
-                mainGrid.add(buttons.get(column+row),column,row,1,1);
-            }
-        }*/
+
 
     }
 
@@ -198,55 +199,9 @@ public class TicTacToe extends Application {
 
         playerMove(stage);
 
-        computerMove(stage);
+       // computerMove(stage);
 
 
-          /*  int column = 0;
-            int row = 0;
-            Text text = new Text();
-            for (Button button : buttons) {
-                if (column <= 2) {
-                    if (board[column][row].equals(shapeOfPlayer)) {
-                        text.setText(shapeOfPlayer);
-                        grid.getChildren().set(grid.getChildren().indexOf(button),text);
-                       // grid.getChildren().remove(text);
-                        //  grid.add(text, column, row, 1, 1);
-                        column++;
-                    } else if (board[column][row].equals(shapeOfComputer)) {
-                        text.setText(shapeOfComputer);
-                        grid.getChildren().set(grid.getChildren().indexOf(button),text);
-                        //grid.getChildren().remove(text);
-                        //grid.add(text, column, row, 1, 1);
-                        column++;
-                    } else {
-                        grid.getChildren().set(grid.getChildren().indexOf(button),text);
-                       // grid.getChildren().remove(button);
-                        //grid.add(button, column, row, 1, 1);
-                        column++;
-                    }
-                } else {
-                    row++;
-                    column = 0;
-                    if (board[column][row].equals(shapeOfPlayer)) {
-                        text.setText(shapeOfPlayer);
-
-                        grid.getChildren().set(grid.getChildren().indexOf(button),text);
-                       // grid.getChildren().remove(text);
-                       // grid.add(text, column, row, 1, 1);
-                    } else if (board[column][row].equals(shapeOfComputer)) {
-                        text.setText(shapeOfComputer);
-                        grid.getChildren().set(grid.getChildren().indexOf(button),text);
-                       // grid.getChildren().remove(text);
-                       // grid.add(text, column, row, 1, 1);
-                    } else {
-                        grid.getChildren().set(grid.getChildren().indexOf(button),text);
-                       // grid.getChildren().remove(button);
-                        //grid.add(button, column, row, 1, 1);
-                    }
-                    column++;
-                }
-            }*/
-            //creating scene
 
 
             return stage;
@@ -260,7 +215,8 @@ public class TicTacToe extends Application {
             text.setText(shapeOfPlayer);
             mainGrid.getChildren().remove(0);
             mainGrid.add(text,0,0);
-
+            //mainGrid.getChildren().set(0,text);
+            System.out.println(mainGrid.getChildren().indexOf(buttons.get(0)));
             stage.close();
         });
         buttons.get(1).setOnAction((ActionEvent)->{
@@ -269,7 +225,7 @@ public class TicTacToe extends Application {
             text.setText(shapeOfPlayer);
             mainGrid.getChildren().remove(1);
             mainGrid.add(text,1,0);
-
+            //mainGrid.getChildren().set(1,text);
             stage.close();
         });
         buttons.get(2).setOnAction((ActionEvent)->{
@@ -278,6 +234,7 @@ public class TicTacToe extends Application {
             text.setText(shapeOfPlayer);
             mainGrid.getChildren().remove(2);
             mainGrid.add(text,2,0);
+            //mainGrid.getChildren().set(2,text);
             stage.close();
         });
         buttons.get(3).setOnAction((ActionEvent)->{
@@ -286,6 +243,7 @@ public class TicTacToe extends Application {
             text.setText(shapeOfPlayer);
             mainGrid.getChildren().remove(3);
             mainGrid.add(text,0,1);
+            //mainGrid.getChildren().set(3,text);
             stage.close();
         });
         buttons.get(4).setOnAction((ActionEvent)->{
@@ -294,6 +252,7 @@ public class TicTacToe extends Application {
             text.setText(shapeOfPlayer);
             mainGrid.getChildren().remove(4);
             mainGrid.add(text,1,1);
+            //mainGrid.getChildren().set(4,text);
             stage.close();
         });
         buttons.get(5).setOnAction((ActionEvent)->{
@@ -302,6 +261,7 @@ public class TicTacToe extends Application {
             text.setText(shapeOfPlayer);
             mainGrid.getChildren().remove(5);
             mainGrid.add(text,2,1);
+            //mainGrid.getChildren().set(5,text);
             stage.close();
         });
         buttons.get(6).setOnAction((ActionEvent)->{
@@ -310,6 +270,7 @@ public class TicTacToe extends Application {
             text.setText(shapeOfPlayer);
             mainGrid.getChildren().remove(6);
             mainGrid.add(text,0,2);
+            //mainGrid.getChildren().set(6,text);
             stage.close();
         });
         buttons.get(7).setOnAction((ActionEvent)->{
@@ -318,14 +279,16 @@ public class TicTacToe extends Application {
             text.setText(shapeOfPlayer);
             mainGrid.getChildren().remove(7);
             mainGrid.add(text,1,2);
+            //mainGrid.getChildren().set(7,text);
             stage.close();
         });
         buttons.get(8).setOnAction((ActionEvent)->{
             board[2][2]=shapeOfPlayer;
             Text text = new Text();
             text.setText(shapeOfPlayer);
-            mainGrid.getChildren().remove(8);
+            mainGrid.getChildren().remove(7);
             mainGrid.add(text,2,2);
+            //mainGrid.getChildren().set(8,text);
             stage.close();
         });
 
@@ -333,119 +296,40 @@ public class TicTacToe extends Application {
     }
     public void computerMove(Stage stage){
         Random random = new Random();
-        boolean possibleMove=false;
-        int computerColumn;
-        int computerRow;
+        boolean possibleMove=true;
+
         Text text = new Text();
         text.setText(shapeOfComputer);
-        while(!possibleMove){
-        //Generating random position of computer shape
-            int computerMove = random.nextInt(8);
 
 
-            switch(computerMove){
-                case 0:
-                    if(board[0][0].equals(shapeOfPlayer)){
-                        break;
-                    }else{
-                        board[0][0]=shapeOfComputer;
-                        mainGrid.getChildren().set(0,text);
-                       // mainGrid.getChildren().remove(0);
-                        //mainGrid.add(text,0,0,1,1);
+        while(possibleMove){
+            int computerMove = random.nextInt(9);
+            int column = random.nextInt(3);
+            int row = random.nextInt(3);
+
+
+            if(board[column][row].toString().equals(shapeOfPlayer)){
+                continue;
+            }else{
+                int index=0;
+                for(int i = 0;i<=2;i++){
+                    for(int j = 0; j<=2;j++){
+                        if(i==column && j==row){
+                            break;
+                        }
+                        index++;
                     }
-                    possibleMove=true;
-                    break;
-                case 1:
-                if(board[1][0].equals(shapeOfPlayer)){
-                    break;
-                }else{
-                    board[1][0]=shapeOfComputer;
-                    mainGrid.getChildren().set(1,text);
-                    //mainGrid.getChildren().remove(1);
-                    //mainGrid.add(text,1,0,1,1);
+
+
                 }
-                    possibleMove=true;
-                break;
-                case 2:
-                    if(board[2][0].equals(shapeOfPlayer)){
-                        break;
-                    }else{
-                        board[2][0]=shapeOfComputer;
-                        mainGrid.getChildren().set(2,text);
-                       // mainGrid.getChildren().remove(2);
-                        //mainGrid.add(text,2,0,1,1);
-                    }
-                    possibleMove=true;
-                    break;
-                case 3:
-                    if(board[0][1].equals(shapeOfPlayer)){
-                        break;
-                    }else{
-                        board[0][1]=shapeOfComputer;
-                        mainGrid.getChildren().set(3,text);
-                       // mainGrid.getChildren().remove(3);
-                        //mainGrid.add(text,0,1,1,1);
-                    }
-                    possibleMove=true;
-                    break;
-                case 4:
-                    if(board[1][1].equals(shapeOfPlayer)){
-                        break;
-                    }else{
-                        board[1][1]=shapeOfComputer;
-                        mainGrid.getChildren().set(4,text);
-                       // mainGrid.getChildren().remove(4);
-                        //mainGrid.add(text,1,1,1,1);
-                    }
-                    possibleMove=true;
-                    break;
-                case 5:
-                    if(board[2][1].equals(shapeOfPlayer)){
-                        break;
-                    }else{
-                        board[2][1]=shapeOfComputer;
-                        mainGrid.getChildren().set(5,text);
-                        //mainGrid.getChildren().remove(5);
-                        //mainGrid.add(text,2,1,1,1);
-                    }
-                    possibleMove=true;
-                    break;
-                case 6:
-                    if(board[0][2].equals(shapeOfPlayer)){
-                        break;
-                    }else{
-                        board[0][2]=shapeOfComputer;
-                        mainGrid.getChildren().set(6,text);
-                      // mainGrid.getChildren().remove(6);
-                       // mainGrid.add(text,0,2,1,1);
-                    }
-                    possibleMove=true;
-                    break;
-                case 7:
-                    if(board[1][2].equals(shapeOfPlayer)){
-                        break;
-                    }else{
-                        board[1][2]=shapeOfComputer;
-                        mainGrid.getChildren().set(7,text);
-                       // mainGrid.getChildren().remove(7);
-                        //mainGrid.add(text,1,2,1,1);
-                    }
-                    possibleMove=true;
-                    break;
-                case 8:
-                if(board[2][2].equals(shapeOfPlayer)){
-                    break;
-                }else{
-                    board[2][2]=shapeOfComputer;
-                    mainGrid.getChildren().set(8,text);
-                   // mainGrid.getChildren().remove(8);
-                    //mainGrid.add(text,2,2,1,1);
-                }
-                possibleMove=true;
-                break;
+
+                mainGrid.getChildren().set(index,text);
+                System.out.println(board[column][row].toString());
+                possibleMove=false;
             }
 
-
         }
+
+
     }
 }
