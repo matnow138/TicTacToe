@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
@@ -28,10 +29,11 @@ public class TicTacToe extends Application {
     private Image imageback = new Image("file:src/main/resources/background.jpg");
     private String shapeOfPlayer="";
     private String shapeOfComputer="";
-    private String[][] board = new String[3][3];
+    private Button[][] board = new Button[3][3];
     private List<Button> buttons = new ArrayList<>();
 
     private GridPane mainGrid = new GridPane();
+    int roundCount=1;
 
 
     public static void main(String[] args){
@@ -75,9 +77,6 @@ public class TicTacToe extends Application {
         Scene scene = new Scene(gridPane, 400,300);
         stage.setScene(scene);
         stage.showAndWait();
-
-
-
     }
     public void shapeDecision(){
 
@@ -119,7 +118,7 @@ public class TicTacToe extends Application {
 
     public void gameRunner(){
         boardFill();
-        boolean result=false;
+
 
             Stage stage = board();
         Scene scene = new Scene(mainGrid, 600, 600);
@@ -127,57 +126,151 @@ public class TicTacToe extends Application {
         //display of stage
         stage.setTitle("Tic Tac Toe");
         stage.setScene(scene);
-            stage.showAndWait();
-            stage = board();
-        stage.setTitle("Tic Tac Toe");
-        stage.setScene(scene);
-            stage.showAndWait();
-        stage = board();
-        stage.setTitle("Tic Tac Toe");
-        stage.setScene(scene);
-        stage.showAndWait();
-        stage = board();
-        stage.setTitle("Tic Tac Toe");
-        stage.setScene(scene);
-        stage.showAndWait();
+            stage.show();
+    }
 
+    public void checkVerticaly(){
+        int playerCounter0=0;
+        int computerCounter0=0;
+        for(int i =0;i<=2;i++){
+            if(board[0][i].getText().equals(shapeOfPlayer)){
+                playerCounter0 +=1;
+            }else if(board[0][i].getText().equals(shapeOfComputer)){
+                computerCounter0+=1;
+            }
+        }
+        int playerCounter1=0;
+        int computerCounter1=0;
+        for(int i =0;i<=2;i++){
+            if(board[1][i].getText().equals(shapeOfPlayer)){
+                playerCounter1 +=1;
+            }else if(board[1][i].getText().equals(shapeOfComputer)){
+                computerCounter1+=1;
+            }
+        }
+        int playerCounter2=0;
+        int computerCounter2=0;
+        for(int i =0;i<=2;i++){
+            if(board[2][i].getText().equals(shapeOfPlayer)){
+                playerCounter2 +=1;
+            }
+            else if(board[0][i].getText().equals(shapeOfComputer)){
+                computerCounter2+=1;
+            }
+        }
+        if(playerCounter0==3 || playerCounter1==3 || playerCounter2==3){
+            String winner = "Player";
+            endGame(winner);
+        }else if(computerCounter0==3 || computerCounter1==3 || computerCounter2==3){
+            String winner = "Computer";
+            endGame(winner);
+        }
+    }
+    public void checkHorizontaly(){
+        int playerCounter0=0;
+        int computerCounter0=0;
+        for(int i =0;i<=2;i++){
+            if(board[i][0].getText().equals(shapeOfPlayer)){
+                playerCounter0 +=1;
+            }else if(board[i][0].getText().equals(shapeOfComputer)){
+                computerCounter0+=1;
+            }
+        }
+        int playerCounter1=0;
+        int computerCounter1=0;
+        for(int i =0;i<=2;i++){
+            if(board[i][1].getText().equals(shapeOfPlayer)){
+                playerCounter1 +=1;
+            }else if(board[i][1].getText().equals(shapeOfComputer)){
+                computerCounter1+=1;
+            }
+        }
+        int playerCounter2=0;
+        int computerCounter2=0;
+        for(int i =0;i<=2;i++){
+            if(board[i][2].getText().equals(shapeOfPlayer)){
+                playerCounter2 +=1;
+            }
+            else if(board[i][2].getText().equals(shapeOfComputer)){
+                computerCounter2+=1;
+            }
+        }
+        if(playerCounter0==3 || playerCounter1==3 || playerCounter2==3){
+            String winner = "Player";
+            endGame(winner);
+        }else if(computerCounter0==3 || computerCounter1==3 || computerCounter2==3){
+            String winner = "Computer";
+            endGame(winner);
+        }
+    }
 
+    public void checkDiagonal(){
+        int playerCounter0=0;
+        int computerCounter0=0;
+        for(int i =0;i<=2;i++){
+            if(board[i][i].getText().equals(shapeOfPlayer)){
+                playerCounter0 +=1;
+            }else if(board[i][i].getText().equals(shapeOfComputer)){
+                computerCounter0+=1;
+            }
+        }
+        int playerCounter1=0;
+        int computerCounter1=0;
+        for(int i =0;i<=2;i++){
+            if(board[i][2-i].getText().equals(shapeOfPlayer)){
+                playerCounter1 +=1;
+            }else if(board[i][2-i].getText().equals(shapeOfComputer)){
+                computerCounter1+=1;
+            }
+        }
 
-
-
-        //To do
+        if(playerCounter0==3 || playerCounter1==3){
+            String winner = "Player";
+            endGame(winner);
+        }else if(computerCounter0==3 || computerCounter1==3){
+            String winner = "Computer";
+            endGame(winner);
+        }
     }
     public void boardFill() {
+        Random random = new Random();
 
-        buttons.add(new Button("1"));
-        buttons.add(new Button("2"));
-        buttons.add(new Button("3"));
-        buttons.add(new Button("4"));
-        buttons.add(new Button("5"));
-        buttons.add(new Button("6"));
-        buttons.add(new Button("7"));
-        buttons.add(new Button("8"));
-        buttons.add(new Button("9"));
-        int index=0;
-        for (int column = 0; column <= 2; column++) {
-            for (int row = 0; row <= 2; row++) {
-                board[column][row] = buttons.get(index).getText();
-                index++;
+        for(int column=0; column<=2;column++){
+            for(int row=0;row<=2;row++){
+                Button button = new Button(" ");
+                mainGrid.add(button,column,row);
+                board[column][row]= button;
+                button.setOnAction((ActionEvent)->{
+
+                        if (button.getText().equals(" ")) {
+                            button.setText(shapeOfPlayer);
+                            int computerMove = random.nextInt(9);
+                            //Button tempButton = mainGrid.getChildren().get(computerMove).getAccessibleText();
+                            boolean possibleMove=false;
+                            int counter=0;
+                            while(!possibleMove) {
+                                int computerColumn = random.nextInt(3);
+                                int computerRow = random.nextInt(3);
+                                for (Node node : mainGrid.getChildren()) {
+                                    Button buttonCheck = (Button) node;
+                                    if (mainGrid.getColumnIndex(node) == computerColumn && mainGrid.getRowIndex(node) == computerRow) {
+                                        if (buttonCheck.getText().equals(" ")) {
+                                            buttonCheck.setText(shapeOfComputer);
+                                            board[computerColumn][computerRow]=buttonCheck;
+                                            possibleMove=true;
+                                        }else if(counter==8){
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            checkVerticaly();
+                            checkHorizontaly();
+                            checkDiagonal();
+                        }
+                    });
             }
         }
-        int column=0;
-        int row=0;
-        for(Button button:buttons){
-            mainGrid.add(button,column,row);
-            column++;
-            if(column>2){
-                column=0;
-                row++;
-            }
-
-        }
-
-
     }
 
     public Stage board() {
@@ -196,140 +289,32 @@ public class TicTacToe extends Application {
         mainGrid.setVgap(100);
         mainGrid.setBackground(background);
 
-
-        playerMove(stage);
-
-       // computerMove(stage);
-
-
-
-
             return stage;
 
     }
 
-    public void playerMove(Stage stage){
-        buttons.get(0).setOnAction((ActionEvent)->{
-            board[0][0]=(shapeOfPlayer);
-            Text text = new Text();
-            text.setText(shapeOfPlayer);
-            mainGrid.getChildren().remove(0);
-            mainGrid.add(text,0,0);
-            //mainGrid.getChildren().set(0,text);
-            System.out.println(mainGrid.getChildren().indexOf(buttons.get(0)));
-            stage.close();
-        });
-        buttons.get(1).setOnAction((ActionEvent)->{
-            board[1][0]=shapeOfPlayer;
-            Text text = new Text();
-            text.setText(shapeOfPlayer);
-            mainGrid.getChildren().remove(1);
-            mainGrid.add(text,1,0);
-            //mainGrid.getChildren().set(1,text);
-            stage.close();
-        });
-        buttons.get(2).setOnAction((ActionEvent)->{
-            board[2][0]=shapeOfPlayer;
-            Text text = new Text();
-            text.setText(shapeOfPlayer);
-            mainGrid.getChildren().remove(2);
-            mainGrid.add(text,2,0);
-            //mainGrid.getChildren().set(2,text);
-            stage.close();
-        });
-        buttons.get(3).setOnAction((ActionEvent)->{
-            board[0][1]=shapeOfPlayer;
-            Text text = new Text();
-            text.setText(shapeOfPlayer);
-            mainGrid.getChildren().remove(3);
-            mainGrid.add(text,0,1);
-            //mainGrid.getChildren().set(3,text);
-            stage.close();
-        });
-        buttons.get(4).setOnAction((ActionEvent)->{
-            board[1][1]=shapeOfPlayer;
-            Text text = new Text();
-            text.setText(shapeOfPlayer);
-            mainGrid.getChildren().remove(4);
-            mainGrid.add(text,1,1);
-            //mainGrid.getChildren().set(4,text);
-            stage.close();
-        });
-        buttons.get(5).setOnAction((ActionEvent)->{
-            board[2][1]=shapeOfPlayer;
-            Text text = new Text();
-            text.setText(shapeOfPlayer);
-            mainGrid.getChildren().remove(5);
-            mainGrid.add(text,2,1);
-            //mainGrid.getChildren().set(5,text);
-            stage.close();
-        });
-        buttons.get(6).setOnAction((ActionEvent)->{
-            board[0][2]=shapeOfPlayer;
-            Text text = new Text();
-            text.setText(shapeOfPlayer);
-            mainGrid.getChildren().remove(6);
-            mainGrid.add(text,0,2);
-            //mainGrid.getChildren().set(6,text);
-            stage.close();
-        });
-        buttons.get(7).setOnAction((ActionEvent)->{
-            board[1][2]=shapeOfPlayer;
-            Text text = new Text();
-            text.setText(shapeOfPlayer);
-            mainGrid.getChildren().remove(7);
-            mainGrid.add(text,1,2);
-            //mainGrid.getChildren().set(7,text);
-            stage.close();
-        });
-        buttons.get(8).setOnAction((ActionEvent)->{
-            board[2][2]=shapeOfPlayer;
-            Text text = new Text();
-            text.setText(shapeOfPlayer);
-            mainGrid.getChildren().remove(7);
-            mainGrid.add(text,2,2);
-            //mainGrid.getChildren().set(8,text);
-            stage.close();
-        });
-
-
-    }
-    public void computerMove(Stage stage){
-        Random random = new Random();
-        boolean possibleMove=true;
-
+    public void endGame(String winner) {
+        Stage stage = new Stage();
         Text text = new Text();
-        text.setText(shapeOfComputer);
+        text.setText(winner + " wins game!");
+
+        Button endButton = new Button("Proceed");
 
 
-        while(possibleMove){
-            int computerMove = random.nextInt(9);
-            int column = random.nextInt(3);
-            int row = random.nextInt(3);
 
+        endButton.setOnAction((ActionEvent event) -> {
+            exit();
+        });
 
-            if(board[column][row].toString().equals(shapeOfPlayer)){
-                continue;
-            }else{
-                int index=0;
-                for(int i = 0;i<=2;i++){
-                    for(int j = 0; j<=2;j++){
-                        if(i==column && j==row){
-                            break;
-                        }
-                        index++;
-                    }
+        GridPane gridPane = new GridPane();
 
+        gridPane.add(text,0,0,1,1);
+        gridPane.add(endButton,0,3,2,1);
+        gridPane.setVgap(10);
 
-                }
-
-                mainGrid.getChildren().set(index,text);
-                System.out.println(board[column][row].toString());
-                possibleMove=false;
-            }
-
-        }
-
-
+        Scene scene = new Scene(gridPane, 400,300);
+        stage.setScene(scene);
+        stage.show();
     }
+
 }
