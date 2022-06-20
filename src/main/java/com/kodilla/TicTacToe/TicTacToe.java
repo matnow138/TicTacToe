@@ -1,8 +1,6 @@
 package com.kodilla.TicTacToe;
 
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -16,24 +14,20 @@ import javafx.scene.text.Text;
 import javafx.event.ActionEvent;
 
 
-import javax.swing.*;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import static javafx.application.Platform.exit;
 
 public class TicTacToe extends Application {
 
-    private Image imageback = new Image("file:src/main/resources/background.jpg");
+    private final Image imageback = new Image("file:src/main/resources/background.jpg");
     private String shapeOfPlayer="";
     private String shapeOfComputer="";
     private Button[][] board = new Button[3][3];
-    private List<Button> buttons = new ArrayList<>();
+
 
     private GridPane mainGrid = new GridPane();
-    int roundCount=1;
+
 
 
     public static void main(String[] args){
@@ -53,12 +47,12 @@ public class TicTacToe extends Application {
     }
 
     public void instruction(){
-        Text text = new Text();
-        text.setText("Welcome to Tic Tac toe game! \n Here are some rules:\n"+
+        Text instructions = new Text();
+        instructions.setText("Welcome to Tic Tac toe game! \n Here are some rules:\n"+
                 "1. Chose 'X' or 'O'\n"+
                 "2. Player plays against computer\n"+
                 "3. If  3 'X' or 3 'O' appears in row, column or diagonal game ends.\n" +
-                "4. Using keys 1-9 please chose place to insert previously chosen shape");
+                "4. Using buttons please chose place to insert previously chosen shape");
 
         Button confirm = new Button("Proceed");
 
@@ -70,7 +64,7 @@ public class TicTacToe extends Application {
 
         GridPane gridPane = new GridPane();
 
-        gridPane.add(text,0,0,1,1);
+        gridPane.add(instructions,0,0,1,1);
         gridPane.add(confirm,0,3,2,1);
         gridPane.setVgap(10);
 
@@ -81,8 +75,8 @@ public class TicTacToe extends Application {
     public void shapeDecision(){
 
         Stage stage = new Stage();
-        Text text = new Text();
-        text.setText("Please chose your shape:");
+        Text shapeChooseText = new Text();
+        shapeChooseText.setText("Please chose your shape:");
 
         Button buttonO=new Button("O");
 
@@ -102,7 +96,7 @@ public class TicTacToe extends Application {
         });
 
         GridPane gridPane = new GridPane();
-        gridPane.add(text,0,0,1,1);
+        gridPane.add(shapeChooseText,0,0,1,1);
         gridPane.add(buttonO,0,1,1,1);
         gridPane.add(buttonX,1,1,1,1);
         gridPane.setAlignment(Pos.CENTER);
@@ -119,8 +113,7 @@ public class TicTacToe extends Application {
     public void gameRunner(){
         boardFill();
 
-
-            Stage stage = board();
+        Stage stage = board();
         Scene scene = new Scene(mainGrid, 600, 600);
 
         //display of stage
@@ -233,7 +226,7 @@ public class TicTacToe extends Application {
         }
     }
     public void boardFill() {
-        Random random = new Random();
+
 
         for(int column=0; column<=2;column++){
             for(int row=0;row<=2;row++){
@@ -241,34 +234,17 @@ public class TicTacToe extends Application {
                 mainGrid.add(button,column,row);
                 board[column][row]= button;
                 button.setOnAction((ActionEvent)->{
-
+                        //setting shape of player to button
                         if (button.getText().equals(" ")) {
                             button.setText(shapeOfPlayer);
-                            int computerMove = random.nextInt(9);
-                            //Button tempButton = mainGrid.getChildren().get(computerMove).getAccessibleText();
-                            boolean possibleMove=false;
-                            int counter=0;
-                            while(!possibleMove) {
-                                int computerColumn = random.nextInt(3);
-                                int computerRow = random.nextInt(3);
-                                for (Node node : mainGrid.getChildren()) {
-                                    Button buttonCheck = (Button) node;
-                                    if (mainGrid.getColumnIndex(node) == computerColumn && mainGrid.getRowIndex(node) == computerRow) {
-                                        if (buttonCheck.getText().equals(" ")) {
-                                            buttonCheck.setText(shapeOfComputer);
-                                            board[computerColumn][computerRow]=buttonCheck;
-                                            possibleMove=true;
-                                        }else if(counter==8){
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
+                            computerMove();
+
+                            //Check winning conditions
                             checkVerticaly();
                             checkHorizontaly();
                             checkDiagonal();
                         }
-                    });
+                });
             }
         }
     }
@@ -295,8 +271,13 @@ public class TicTacToe extends Application {
 
     public void endGame(String winner) {
         Stage stage = new Stage();
-        Text text = new Text();
-        text.setText(winner + " wins game!");
+        Text gameWinner = new Text();
+        if(winner.equals("Draw")){
+            gameWinner.setText("Draw!");
+        }else{
+            gameWinner.setText(winner + " wins game!");
+        }
+
 
         Button endButton = new Button("Proceed");
 
@@ -308,7 +289,7 @@ public class TicTacToe extends Application {
 
         GridPane gridPane = new GridPane();
 
-        gridPane.add(text,0,0,1,1);
+        gridPane.add(gameWinner,0,0,1,1);
         gridPane.add(endButton,0,3,2,1);
         gridPane.setVgap(10);
 
@@ -316,5 +297,35 @@ public class TicTacToe extends Application {
         stage.setScene(scene);
         stage.show();
     }
+    public void computerMove(){
+        Random random = new Random();
+        boolean possibleMove=false;
+        int counter=0;
+        //Generating random computer move
+        while(!possibleMove) {
+
+            int computerColumn = random.nextInt(3);
+            int computerRow = random.nextInt(3);
+            for (Node node : mainGrid.getChildren()) {
+                Button buttonCheck = (Button) node;
+                if (mainGrid.getColumnIndex(node) == computerColumn && mainGrid.getRowIndex(node) == computerRow) {
+                    if (buttonCheck.getText().equals(" ")) {
+                        buttonCheck.setText(shapeOfComputer);
+                        board[computerColumn][computerRow]=buttonCheck;
+                        possibleMove=true;
+                    } else{
+                        counter++;
+
+                    }
+                }
+            }
+            //Checking for DRAW
+            if(counter==9){
+                possibleMove=true;
+                endGame("Draw");
+            }
+        }
+    }
+
 
 }
