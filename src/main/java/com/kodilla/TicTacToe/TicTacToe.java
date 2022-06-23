@@ -112,143 +112,52 @@ public class TicTacToe extends Application {
 
     public void gameRunner(){
         boardFill();
-
+        actionsForButtons();
         Stage stage = board();
         Scene scene = new Scene(mainGrid, 600, 600);
 
         //display of stage
         stage.setTitle("Tic Tac Toe");
         stage.setScene(scene);
-            stage.show();
+        stage.show();
     }
 
-    public void checkVerticaly(){
-        int playerCounter0=0;
-        int computerCounter0=0;
-        for(int i =0;i<=2;i++){
-            if(board[0][i].getText().equals(shapeOfPlayer)){
-                playerCounter0 +=1;
-            }else if(board[0][i].getText().equals(shapeOfComputer)){
-                computerCounter0+=1;
-            }
-        }
-        int playerCounter1=0;
-        int computerCounter1=0;
-        for(int i =0;i<=2;i++){
-            if(board[1][i].getText().equals(shapeOfPlayer)){
-                playerCounter1 +=1;
-            }else if(board[1][i].getText().equals(shapeOfComputer)){
-                computerCounter1+=1;
-            }
-        }
-        int playerCounter2=0;
-        int computerCounter2=0;
-        for(int i =0;i<=2;i++){
-            if(board[2][i].getText().equals(shapeOfPlayer)){
-                playerCounter2 +=1;
-            }
-            else if(board[0][i].getText().equals(shapeOfComputer)){
-                computerCounter2+=1;
-            }
-        }
-        if(playerCounter0==3 || playerCounter1==3 || playerCounter2==3){
-            String winner = "Player";
-            endGame(winner);
-        }else if(computerCounter0==3 || computerCounter1==3 || computerCounter2==3){
-            String winner = "Computer";
-            endGame(winner);
-        }
-    }
-    public void checkHorizontaly(){
-        int playerCounter0=0;
-        int computerCounter0=0;
-        for(int i =0;i<=2;i++){
-            if(board[i][0].getText().equals(shapeOfPlayer)){
-                playerCounter0 +=1;
-            }else if(board[i][0].getText().equals(shapeOfComputer)){
-                computerCounter0+=1;
-            }
-        }
-        int playerCounter1=0;
-        int computerCounter1=0;
-        for(int i =0;i<=2;i++){
-            if(board[i][1].getText().equals(shapeOfPlayer)){
-                playerCounter1 +=1;
-            }else if(board[i][1].getText().equals(shapeOfComputer)){
-                computerCounter1+=1;
-            }
-        }
-        int playerCounter2=0;
-        int computerCounter2=0;
-        for(int i =0;i<=2;i++){
-            if(board[i][2].getText().equals(shapeOfPlayer)){
-                playerCounter2 +=1;
-            }
-            else if(board[i][2].getText().equals(shapeOfComputer)){
-                computerCounter2+=1;
-            }
-        }
-        if(playerCounter0==3 || playerCounter1==3 || playerCounter2==3){
-            String winner = "Player";
-            endGame(winner);
-        }else if(computerCounter0==3 || computerCounter1==3 || computerCounter2==3){
-            String winner = "Computer";
-            endGame(winner);
-        }
-    }
 
-    public void checkDiagonal(){
-        int playerCounter0=0;
-        int computerCounter0=0;
-        for(int i =0;i<=2;i++){
-            if(board[i][i].getText().equals(shapeOfPlayer)){
-                playerCounter0 +=1;
-            }else if(board[i][i].getText().equals(shapeOfComputer)){
-                computerCounter0+=1;
-            }
-        }
-        int playerCounter1=0;
-        int computerCounter1=0;
-        for(int i =0;i<=2;i++){
-            if(board[i][2-i].getText().equals(shapeOfPlayer)){
-                playerCounter1 +=1;
-            }else if(board[i][2-i].getText().equals(shapeOfComputer)){
-                computerCounter1+=1;
-            }
-        }
-
-        if(playerCounter0==3 || playerCounter1==3){
-            String winner = "Player";
-            endGame(winner);
-        }else if(computerCounter0==3 || computerCounter1==3){
-            String winner = "Computer";
-            endGame(winner);
-        }
-    }
     public void boardFill() {
-
 
         for(int column=0; column<=2;column++){
             for(int row=0;row<=2;row++){
                 Button button = new Button(" ");
                 mainGrid.add(button,column,row);
                 board[column][row]= button;
-                button.setOnAction((ActionEvent)->{
-                        //setting shape of player to button
-                        if (button.getText().equals(" ")) {
-                            button.setText(shapeOfPlayer);
-                            computerMove();
-
-                            //Check winning conditions
-                            checkVerticaly();
-                            checkHorizontaly();
-                            checkDiagonal();
-                        }
-                });
             }
         }
     }
+    public void actionsForButtons(){
 
+        for (Node node : mainGrid.getChildren()) {
+            Button buttonAction = (Button) node;
+            buttonAction.setOnAction((ActionEvent)->{
+                //setting shape of player to button
+                if (buttonAction.getText().equals(" ")) {
+                    buttonAction.setText(shapeOfPlayer);
+                    computerMove();
+
+                    //Check winning conditions
+                    Verification verification = new Verification(board, shapeOfPlayer, shapeOfComputer);
+                    if(verification.playerWins()){
+                        endGame("Player");
+                        return;
+                    }
+                    if(verification.computerWins()){
+                        endGame("Computer");
+                    }
+                }
+            });
+
+        }
+
+    }
     public Stage board() {
             Stage stage = new Stage();
 
@@ -314,15 +223,17 @@ public class TicTacToe extends Application {
                         board[computerColumn][computerRow]=buttonCheck;
                         possibleMove=true;
                     } else{
-                        counter++;
+
+                        //Check for DRAW
+
+                        Verification tieVerification = new Verification(board, shapeOfPlayer, shapeOfComputer);
+                        if(tieVerification.isTie()){
+                            possibleMove=true;
+                            endGame("Draw");
+                        }
 
                     }
                 }
-            }
-            //Checking for DRAW
-            if(counter==9){
-                possibleMove=true;
-                endGame("Draw");
             }
         }
     }
